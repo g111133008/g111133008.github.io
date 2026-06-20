@@ -2,350 +2,105 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#8b5e3c">
-<title>生命靈數分析</title>
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUDY的遊戲小園地</title>
+
 <style>
-:root{
-  --bg:#f6f1e8;
-  --card:#ffffff;
-  --main:#8b5e3c;
-  --main2:#c06c3e;
-  --soft:#fff7ed;
-  --line:#e5d3bd;
-  --good:#77a86b;
-  --warn:#d46a6a;
-  --text:#2f2a25;
-}
-*{box-sizing:border-box}
 body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;
-  background:linear-gradient(180deg,#f6f1e8,#fffaf2);
-  color:var(--text);
+    margin:0;
+    font-family:"Microsoft JhengHei",sans-serif;
+    background:linear-gradient(135deg,#f7f9fc,#eaf3ff);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
-.app{
-  max-width:760px;
-  margin:auto;
-  min-height:100vh;
-  padding:18px 16px 90px;
+
+.container{
+    width:90%;
+    max-width:600px;
+    text-align:center;
 }
-.header{
-  text-align:center;
-  padding:20px 8px 12px;
+
+h1{
+    color:#2c3e50;
+    margin-bottom:10px;
+    font-size:2rem;
 }
-.header h1{
-  margin:0;
-  color:var(--main);
-  font-size:28px;
-}
-.header p{
-  color:#7a6a5e;
-  font-size:14px;
-}
-.panel{
-  background:var(--card);
-  border-radius:24px;
-  padding:18px;
-  box-shadow:0 8px 26px rgba(97,65,38,.12);
-  margin-bottom:16px;
-}
-label{
-  font-weight:700;
-  display:block;
-  margin-bottom:8px;
-}
-input{
-  width:100%;
-  font-size:18px;
-  padding:14px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  background:#fffdf9;
-}
-button{
-  width:100%;
-  margin-top:14px;
-  font-size:18px;
-  font-weight:700;
-  padding:15px;
-  border:0;
-  border-radius:18px;
-  background:var(--main);
-  color:white;
-}
-button:active{transform:scale(.99)}
-.card{
-  background:var(--card);
-  border-radius:22px;
-  padding:18px;
-  margin:14px 0;
-  box-shadow:0 5px 18px rgba(97,65,38,.09);
-  line-height:1.75;
-}
-.card h2{
-  font-size:20px;
-  margin:0 0 10px;
-  color:var(--main);
-}
-.life-num{
-  font-size:54px;
-  font-weight:900;
-  text-align:center;
-  color:var(--main2);
-  line-height:1;
-}
+
 .subtitle{
-  text-align:center;
-  font-size:20px;
-  font-weight:800;
-  color:var(--main);
-  margin:8px 0 12px;
+    color:#666;
+    margin-bottom:40px;
 }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
+
+.menu-btn{
+    display:block;
+    width:100%;
+    padding:20px;
+    margin:15px 0;
+    border:none;
+    border-radius:20px;
+    font-size:1.2rem;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+    color:white;
 }
-.cell{
-  background:var(--soft);
-  border:1.5px solid var(--line);
-  border-radius:18px;
-  text-align:center;
-  padding:14px 4px;
-  min-height:88px;
+
+.menu-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
-.cell .n{
-  font-size:24px;
-  font-weight:900;
-  color:var(--main);
+
+.life{
+    background:#4CAF50;
 }
-.cell .dots{
-  min-height:24px;
-  color:var(--main2);
-  letter-spacing:2px;
-  font-size:18px;
+
+.student{
+    background:#2196F3;
 }
-.cell .count{
-  font-size:13px;
-  color:#7b7069;
+
+.teacher{
+    background:#FF9800;
 }
-.badge{
-  display:inline-block;
-  padding:3px 9px;
-  border-radius:999px;
-  background:#f1e0ce;
-  color:#6d4327;
-  font-size:13px;
-  font-weight:700;
-}
-.good{border-left:7px solid var(--good)}
-.warn{border-left:7px solid var(--warn)}
-.tip{border-left:7px solid var(--main2)}
-.small{
-  color:#7b7069;
-  font-size:13px;
-  text-align:center;
-  padding:8px;
-}
-.install{
-  display:none;
-  position:fixed;
-  left:16px;
-  right:16px;
-  bottom:16px;
-  max-width:720px;
-  margin:auto;
-  background:#2f2a25;
-  color:white;
-  padding:12px;
-  border-radius:18px;
-  box-shadow:0 5px 20px rgba(0,0,0,.25);
-}
-.install button{
-  background:#fff;
-  color:#2f2a25;
-  margin-top:8px;
-  padding:10px;
-  font-size:15px;
-}
-@media(max-width:430px){
-  .header h1{font-size:25px}
-  .app{padding-left:12px;padding-right:12px}
-  .card,.panel{padding:16px}
+
+.footer{
+    margin-top:30px;
+    color:#888;
+    font-size:0.9rem;
 }
 </style>
 </head>
+
 <body>
-<div class="app">
-  <div class="header">
-    <h1>生命靈數進階分析</h1>
-    <p>主命數・九宮格・圈數・連線・優缺點・趨吉避凶</p>
-  </div>
 
-  <div class="panel">
-    <label for="birthday">請輸入生日</label>
-    <input type="date" id="birthday">
-    <button onclick="analyze()">開始分析</button>
-  </div>
+<div class="container">
 
-  <div id="output"></div>
+    <h1>🎮 JUDY的遊戲小園地</h1>
+    <div class="subtitle">
+        歡迎來到 Judy 的小工具與測驗世界
+    </div>
 
-  <p class="small">※ 本 App 屬於自我探索與娛樂參考，不作為醫療、心理診斷或重大決策依據。</p>
+    <button class="menu-btn life"
+        onclick="window.location.href='https://g111133008.github.io/lifeno/'">
+        🔢 生命靈數計算
+    </button>
+
+    <button class="menu-btn student"
+        onclick="window.location.href='https://g111133008.github.io/MIDAS_GPT/student_version/'">
+        🧠 多元智能評量（學生版）
+    </button>
+
+    <button class="menu-btn teacher"
+        onclick="window.location.href='https://g111133008.github.io/MIDAS_GPT/teacher_version/'">
+        👩‍🏫 多元智能評量（教師版）
+    </button>
+
+    <div class="footer">
+        © JUDY Studio
+    </div>
+
 </div>
 
-<div class="install" id="installBox">
-  <div>可將此工具安裝到手機主畫面，像 App 一樣開啟。</div>
-  <button id="installBtn">安裝到主畫面</button>
-</div>
-
-<script>
-const lifeMeanings={
-1:["開創者","獨立、主動、有企圖心，適合開路與帶頭。人生課題是避免太自我、太急躁，學會聽見他人的節奏。"],
-2:["協調者","敏感、溫柔、重視關係，適合合作、陪伴與支持。人生課題是不要過度委屈自己，要練習說出需求。"],
-3:["表達者","有創意、表達力強、情緒豐富，適合藝術、文字、說話與創作。人生課題是專注與持續。"],
-4:["建構者","務實、穩定、有責任感，適合建立制度與完成計畫。人生課題是保留彈性，不要讓規則綁住自己。"],
-5:["自由者","喜歡變化、探索與新鮮感，適應力強。人生課題是學會承諾與穩定，讓自由成為能力而不是逃避。"],
-6:["照顧者","重視家庭、責任與美感，願意照顧他人。人生課題是建立界線，不要把所有人的問題都扛在自己身上。"],
-7:["探索者","思考深、觀察強、重視內在與真相。人生課題是學會信任與連結，不要過度封閉自己。"],
-8:["實踐者","目標感強、重視成就、資源與管理。人生課題是溫柔使用力量，不讓成就壓過感受。"],
-9:["理想者","有同理心、包容力與理想性，容易關心人群與生命議題。人生課題是學會放下與分辨界線。"],
-11:["靈感者","直覺強、感受細膩，有啟發他人的潛力。人生課題是穩定情緒、落地行動，避免被敏感拖垮。"],
-22:["實現者","能把理想變成具體成果，有長期建構力與影響力。人生課題是不要被壓力壓垮，穩定分階段實踐。"],
-33:["療癒者","具有高度愛、服務與陪伴能量，容易成為他人的支持者。人生課題是先照顧自己，再照顧世界。"]
-};
-
-const numberTraits={
-1:["自我、行動、主見","缺1：較難主動表達；過多：容易強勢、急躁或固執。"],
-2:["感受、合作、敏銳","缺2：較不易感知情緒；過多：容易敏感、多想或受他人影響。"],
-3:["表達、創意、社交","缺3：表達較壓抑；過多：情緒起伏大、分心或說多做少。"],
-4:["秩序、穩定、執行","缺4：較不喜歡規則；過多：容易緊繃、控制或焦慮。"],
-5:["自由、變化、彈性","缺5：較怕改變；過多：容易不安定、衝動或難承諾。"],
-6:["責任、照顧、家庭","缺6：較不想承擔；過多：容易過度照顧、操心或犧牲。"],
-7:["思考、內省、分析","缺7：較少深究；過多：容易孤立、懷疑或想太多。"],
-8:["權力、金錢、成就","缺8：較不重視現實成果；過多：容易壓力、控制或勝負心重。"],
-9:["理想、同理、整合","缺9：較難放大格局；過多：容易犧牲、理想化或難放下。"]
-};
-
-const lines=[
-{nums:[1,2,3],name:"表達學習線",yes:"思考、表達與互動較順，適合教學、分享、創作。",no:"容易有話說不清楚，可練習書寫、簡報與口語表達。"},
-{nums:[4,5,6],name:"實踐組織線",yes:"做事有步驟，能把想法落實成行動。",no:"計畫與執行容易斷裂，適合用清單、行事曆與固定流程。"},
-{nums:[7,8,9],name:"智慧目標線",yes:"具洞察力、格局與長遠眼光。",no:"方向感需慢慢建立，避免只看眼前壓力。"},
-{nums:[1,4,7],name:"行動耐力線",yes:"執行力與耐力佳，能一步一步完成。",no:"容易想很多但行動慢，適合小步驟開始。"},
-{nums:[2,5,8],name:"情緒平衡線",yes:"感受與現實之間較能取得平衡。",no:"情緒與壓力容易失衡，需規律作息與清楚界線。"},
-{nums:[3,6,9],name:"創意人際線",yes:"創造力、人際魅力與分享能力強。",no:"較不善於自然表現自己，可用藝術、書寫或課程設計練習。"},
-{nums:[1,5,9],name:"成長目標線",yes:"有成長動力，能從經驗中提升。",no:"目標容易模糊，需設定短期可完成任務。"},
-{nums:[3,5,7],name:"靈感思考線",yes:"直覺、思考與創意連結強。",no:"靈感不易落地，適合建立固定輸出習慣。"}
-];
-
-function reduceNumber(num){
-  while(![11,22,33].includes(num)&&num>9){
-    num=String(num).split("").reduce((a,b)=>a+Number(b),0);
-  }
-  return num;
-}
-function levelText(c){
-  if(c===0)return "缺數";
-  if(c===1)return "正常";
-  if(c===2)return "加強";
-  return "過強";
-}
-function analyze(){
-  const date=document.getElementById("birthday").value;
-  if(!date){alert("請先輸入生日");return;}
-  const digits=date.replaceAll("-","").split("").map(Number);
-  const valid=digits.filter(n=>n!==0);
-  const sum=digits.reduce((a,b)=>a+b,0);
-  const life=reduceNumber(sum);
-  const count={}; for(let i=1;i<=9;i++)count[i]=0;
-  valid.forEach(n=>count[n]++);
-
-  let html=`<div class="card">
-    <div class="life-num">${life}</div>
-    <div class="subtitle">${lifeMeanings[life][0]}</div>
-    <p><strong>生日：</strong>${date}</p>
-    <p><strong>生日數字總和：</strong>${sum}</p>
-    <p>${lifeMeanings[life][1]}</p>
-  </div>`;
-
-  html+=`<div class="card"><h2>九宮格數字盤</h2><div class="grid">`;
-  [1,2,3,4,5,6,7,8,9].forEach(n=>{
-    html+=`<div class="cell"><div class="n">${n}</div><div class="dots">${"●".repeat(count[n]) || "—"}</div><div class="count">${count[n]}圈｜${levelText(count[n])}</div></div>`;
-  });
-  html+=`</div></div>`;
-
-  html+=`<div class="card"><h2>圈數強弱分析</h2>`;
-  for(let i=1;i<=9;i++){
-    html+=`<p><span class="badge">${i}號｜${levelText(count[i])}</span><br><strong>${numberTraits[i][0]}</strong>：${numberTraits[i][1]}</p>`;
-  }
-  html+=`</div>`;
-
-  html+=`<div class="card"><h2>連線分析</h2>`;
-  lines.forEach(line=>{
-    const has=line.nums.every(n=>count[n]>0);
-    html+=`<p><strong>${line.name} ${line.nums.join("-")}：</strong>${has?"✅ 有連線。"+line.yes:"⚠️ 未形成連線。"+line.no}</p>`;
-  });
-  html+=`</div>`;
-
-  const strengths=[], cautions=[];
-  for(let i=1;i<=9;i++){
-    if(count[i]>=2)strengths.push(i);
-    if(count[i]===0||count[i]>=3)cautions.push(i);
-  }
-
-  html+=`<div class="card good"><h2>優勢整理</h2>`;
-  if(strengths.length===0){
-    html+=`<p>你的數字分布較平均，優勢不一定集中在單一特質，而是需要透過生活經驗慢慢發展。</p>`;
-  }else{
-    strengths.forEach(n=>html+=`<p><strong>${n}號優勢：</strong>${numberTraits[n][0]}能量明顯，容易成為你的自然能力。</p>`);
-  }
-  html+=`</div>`;
-
-  html+=`<div class="card warn"><h2>需要留意</h2>`;
-  if(cautions.length===0){
-    html+=`<p>盤面沒有特別失衡的數字，建議觀察自己在壓力下的慣性反應。</p>`;
-  }else{
-    cautions.forEach(n=>{
-      if(count[n]===0) html+=`<p><strong>缺${n}：</strong>不是缺點，而是需要後天練習的能力。${numberTraits[n][1]}</p>`;
-      if(count[n]>=3) html+=`<p><strong>${n}過強：</strong>代表能力明顯，但壓力大時可能變成困擾。${numberTraits[n][1]}</p>`;
-    });
-  }
-  html+=`</div>`;
-
-  html+=`<div class="card tip"><h2>人生趨吉避凶</h2>
-  <p><strong>趨吉：</strong>把圈數最多的數字當成天賦入口，選擇能發揮這些特質的工作、學習方式與人際角色。</p>
-  <p><strong>避凶：</strong>缺數要刻意練習，過強數要學會收斂與平衡。</p>
-  <p><strong>壓力檢查：</strong>觀察自己是太急、太敏感、太分心、太控制、太逃避、太承擔、太封閉、太用力，還是太犧牲。</p>
-  <p><strong>實用做法：</strong>每週一個小目標、固定整理情緒、練習說出需求、建立界線、保留休息時間。</p>
-  </div>`;
-
-  document.getElementById("output").innerHTML=html;
-  window.scrollTo({top:document.getElementById("output").offsetTop-10,behavior:"smooth"});
-}
-
-if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("sw.js");
-}
-
-let deferredPrompt;
-const installBox=document.getElementById("installBox");
-const installBtn=document.getElementById("installBtn");
-
-window.addEventListener("beforeinstallprompt",(e)=>{
-  e.preventDefault();
-  deferredPrompt=e;
-  installBox.style.display="block";
-});
-
-installBtn.addEventListener("click",async()=>{
-  if(!deferredPrompt)return;
-  deferredPrompt.prompt();
-  await deferredPrompt.userChoice;
-  deferredPrompt=null;
-  installBox.style.display="none";
-});
-</script>
 </body>
 </html>
