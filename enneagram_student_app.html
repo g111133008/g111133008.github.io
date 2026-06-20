@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>九型人格學生版 APP</title>
+  <style>
+    :root{--bg:#f7f4ed;--card:#fffaf1;--ink:#30291f;--muted:#746a5d;--accent:#d99058;--accent2:#79a6a3;--line:#e9dcc7;--soft:#fff3df;}
+    *{box-sizing:border-box} body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;background:linear-gradient(180deg,#fbf1df,#f5f0e8);color:var(--ink)}
+    .app{max-width:980px;margin:auto;padding:18px}.hero{padding:24px;border-radius:28px;background:linear-gradient(135deg,#fff7e8,#eaf5f2);box-shadow:0 10px 30px #b6895e26;margin-bottom:18px;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;right:-40px;top:-50px;width:170px;height:170px;border-radius:50%;background:#ffd39b55}.title{font-size:34px;font-weight:900;margin:0 0 8px}.subtitle{color:var(--muted);line-height:1.7;margin:0}.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.tab{border:0;background:#fff;border:1px solid var(--line);padding:10px 16px;border-radius:999px;font-weight:700;color:var(--ink);cursor:pointer}.tab.active{background:var(--accent);color:white;border-color:var(--accent)}.card{background:rgba(255,250,241,.92);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 8px 20px #8e6b4715;margin-bottom:16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.btn{border:0;background:var(--accent);color:white;border-radius:16px;padding:13px 18px;font-weight:900;cursor:pointer;font-size:16px}.btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn:disabled{opacity:.45;cursor:not-allowed}.question{font-size:20px;font-weight:850;line-height:1.6}.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:16px}.choice{padding:13px 8px;border:1px solid var(--line);border-radius:16px;background:#fff;cursor:pointer;text-align:center;font-weight:700}.choice.selected{background:#ffe1bb;border-color:var(--accent);box-shadow:0 0 0 3px #d9905833}.progress{height:12px;background:#eadfcd;border-radius:999px;overflow:hidden;margin:16px 0}.bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0}.small{font-size:14px;color:var(--muted);line-height:1.7}.pill{display:inline-block;background:#fff;border:1px solid var(--line);padding:6px 10px;border-radius:999px;margin:4px;font-weight:700}.resultHead{display:grid;grid-template-columns:160px 1fr;gap:20px;align-items:center}.animal{width:150px;height:150px;border-radius:32px;background:#fff;display:grid;place-items:center;border:1px solid var(--line);font-size:80px;box-shadow:0 8px 20px #8e6b471a}.scoreRow{display:grid;grid-template-columns:80px 1fr 45px;gap:10px;align-items:center;margin:8px 0}.scorebar{height:12px;background:#eadfcd;border-radius:99px;overflow:hidden}.scorebar span{display:block;height:100%;background:linear-gradient(90deg,#e7a56c,#77aaa4)}.sectionTitle{font-size:23px;margin:4px 0 12px;font-weight:900}.typeCard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px}.hidden{display:none}.footerBtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;margin-top:18px}@media(max-width:650px){.title{font-size:28px}.resultHead{grid-template-columns:1fr;text-align:center}.animal{margin:auto}.scale{grid-template-columns:1fr}.choice{text-align:left}.scoreRow{grid-template-columns:70px 1fr 38px}}
+    @media print{.tabs,.footerBtns,.noPrint{display:none!important}.card,.hero{box-shadow:none;break-inside:avoid}body{background:white}.app{max-width:100%;padding:0}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <h1 class="title">九型人格學生版 APP</h1>
+    <p class="subtitle">這是一套給學生使用的自我探索工具，不是診斷，也不是貼標籤。請用它來認識自己的優勢、壓力反應、學習方式、人際風格與成長方向。</p>
+  </section>
+  <div class="tabs noPrint">
+    <button class="tab active" onclick="showPage('home')">首頁</button>
+    <button class="tab" onclick="showPage('test')">開始測驗</button>
+    <button class="tab" onclick="showPage('types')">九型介紹</button>
+    <button class="tab" onclick="showPage('about')">使用說明</button>
+  </div>
+  <main id="home" class="page">
+    <div class="card">
+      <h2 class="sectionTitle">人格冒險島任務</h2>
+      <div class="grid">
+        <div class="typeCard"><b>任務一</b><br>完成 90 題學生版測驗</div>
+        <div class="typeCard"><b>任務二</b><br>找出主要人格與可能翅膀</div>
+        <div class="typeCard"><b>任務三</b><br>看見壓力下與成長後的自己</div>
+        <div class="typeCard"><b>任務四</b><br>取得學習、人際、生涯建議</div>
+      </div><br>
+      <button class="btn" onclick="showPage('test')">開始測驗</button>
+    </div>
+  </main>
+  <main id="test" class="page hidden">
+    <div id="quizBox" class="card"></div>
+  </main>
+  <main id="result" class="page hidden">
+    <div id="resultBox"></div>
+  </main>
+  <main id="types" class="page hidden"><div class="card"><h2 class="sectionTitle">九型動物人格介紹</h2><div id="typeList" class="grid"></div></div></main>
+  <main id="about" class="page hidden"><div class="card"><h2 class="sectionTitle">教師與學生使用說明</h2><p class="small">建議用於輔導課、生涯課、班級經營或自我探索活動。結果應以「目前傾向」理解，不應作為評價學生好壞的依據。若學生在壓力、憂鬱、自傷或家庭困境中，仍需由專業輔導與醫療資源協助。</p><p class="small">計分方式：每題 1～5 分，九型各有 8 題核心題；另有 18 題學生狀態題，用於補充學習、人際、壓力與成長建議。</p></div></main>
+</div>
+<script>
+const types={
+1:{name:'第一型 改革/完美型',animal:'🦉',animalName:'貓頭鷹守護者',traits:['認真負責','有原則','重視對錯'],strength:'做事細心、值得信任，能讓團隊更有秩序。',watch:'容易對自己太嚴格，也可能不自覺批評別人。',learn:'適合使用清單、檢核表、錯題整理與階段目標。',relation:'練習先肯定，再提出建議；允許自己和別人不完美。',career:'法律、教育、醫療、行政管理、品質控管、工程規劃。',growth:'把「做對」改成「慢慢變好」。'},
+2:{name:'第二型 助人型',animal:'🐶',animalName:'黃金獵犬陪伴者',traits:['溫暖體貼','樂於幫忙','重視關係'],strength:'很會照顧氣氛，也容易發現別人的需要。',watch:'容易忽略自己，或因為沒被感謝而受傷。',learn:'適合用教別人、互相討論、小組合作來學習。',relation:'練習說出自己的需要，不用靠過度付出換取喜歡。',career:'心理助人、教育、護理、社工、服務業、公關。',growth:'把「別人需要我」改成「我也值得被照顧」。'},
+3:{name:'第三型 成就型',animal:'🐆',animalName:'獵豹行動家',traits:['目標明確','重視表現','行動快速'],strength:'有企圖心、效率高，能帶動團隊往目標前進。',watch:'容易把成績和價值綁在一起，害怕失敗。',learn:'適合明確目標、時間表、成果展示與挑戰任務。',relation:'練習分享真實感受，不只是展現成功的一面。',career:'商業、行銷、企劃、表演、管理、創業、運動競技。',growth:'把「我要成功」改成「真實的我也很好」。'},
+4:{name:'第四型 自我/浪漫型',animal:'🦄',animalName:'獨角獸創作者',traits:['感受細膩','重視獨特','富有創意'],strength:'能把情緒、故事與美感表達得很深刻。',watch:'容易陷入比較，覺得別人都有而自己沒有。',learn:'適合用圖像、故事、創作、主題式探究來學習。',relation:'練習把感受說清楚，而不是期待別人猜到。',career:'藝術、設計、寫作、音樂、影像、心理與文化創意。',growth:'把「我很特別所以孤單」改成「我能用獨特連結世界」。'},
+5:{name:'第五型 觀察型',animal:'🦊',animalName:'狐狸學者',traits:['愛思考','重視知識','需要空間'],strength:'分析力強，能深入研究並提出清楚觀點。',watch:'容易退回自己的世界，避免情緒與互動。',learn:'適合自主研究、資料整理、邏輯架構與安靜思考。',relation:'練習適度分享想法，不必等到完全準備好才開口。',career:'研究、資訊、工程、科學、資料分析、策略規劃。',growth:'把「我需要先懂才安全」改成「我可以邊參與邊理解」。'},
+6:{name:'第六型 忠誠/安全型',animal:'🐿️',animalName:'松鼠守衛者',traits:['謹慎可靠','重視安全','善於預想風險'],strength:'能看見問題、提醒風險，是團隊穩定力量。',watch:'容易焦慮、猶豫，反覆確認才安心。',learn:'適合有架構、有範例、有明確標準的學習方式。',relation:'練習相信自己的判斷，不把每個未知都當危險。',career:'教育、法律、行政、警消、資訊安全、風險管理。',growth:'把「萬一出事怎麼辦」改成「我有能力處理變化」。'},
+7:{name:'第七型 樂觀/冒險型',animal:'🐬',animalName:'海豚探險家',traits:['活潑好奇','點子很多','追求自由'],strength:'很會帶來創意、希望感與新鮮感。',watch:'容易逃避無聊或痛苦，事情開很多但收尾困難。',learn:'適合遊戲化、專題式、短任務、多變化的學習。',relation:'練習停下來聽完別人，也練習完成承諾。',career:'創意企劃、旅遊、媒體、活動設計、教育、創業。',growth:'把「我要一直快樂」改成「我能承受感受，也能完成事情」。'},
+8:{name:'第八型 領導/挑戰型',animal:'🦁',animalName:'獅子領袖',traits:['勇敢直接','保護弱小','不怕衝突'],strength:'有力量、有正義感，能在關鍵時刻站出來。',watch:'容易太強勢，讓別人不敢說真話。',learn:'適合實作挑戰、辯論、任務領導與問題解決。',relation:'練習把保護變成支持，而不是控制。',career:'管理、法律、政治、軍警、創業、運動、社會倡議。',growth:'把「我要掌控」改成「我能有力量也能柔軟」。'},
+9:{name:'第九型 和平型',animal:'🐼',animalName:'熊貓和平家',traits:['溫和穩定','重視和諧','善於包容'],strength:'能安定氣氛，讓不同的人有被接納的感覺。',watch:'容易逃避衝突，把自己的想法放到最後。',learn:'適合穩定節奏、陪伴式、從小步驟開始的學習。',relation:'練習說出「我想要」，你的聲音也很重要。',career:'諮詢、教育、行政、照護、藝術、協調溝通、社區工作。',growth:'把「大家好就好」改成「我也可以清楚存在」。'}
+};
+const core=[]; const stems={1:['我希望事情能照規則完成','看到錯誤時，我會想把它修正','我常提醒自己要更好','我不太能接受隨便或混亂','我做作業或任務時會檢查細節','我在意公平與正確','我常覺得自己應該更努力','我希望自己是可靠又有原則的人'],2:['我會注意同學或朋友的心情','別人需要我時，我會想幫忙','我希望自己是溫暖的人','被感謝會讓我很開心','我常先照顧別人的需要','我不喜歡看到身邊的人難過','我會想讓大家感覺被支持','我有時會不好意思拒絕別人'],3:['我希望自己表現亮眼','我會為了目標努力衝刺','被肯定會讓我更有動力','我在意別人怎麼看我的表現','我喜歡完成任務的成就感','我會想找到更有效率的方法','我不喜歡輸或被看扁','我希望自己看起來有能力'],4:['我常覺得自己和別人不太一樣','我很重視自己的感受','我喜歡有特色、有美感的事物','我容易被音樂、文字或畫面打動','我希望別人理解真正的我','我有時會覺得自己很孤單','我喜歡用創作表達心情','我不喜歡太普通或沒感覺的生活'],5:['我喜歡先觀察再行動','我對有興趣的主題會深入研究','我需要自己的空間和時間','我喜歡把事情想清楚','我不喜歡被迫立刻表態','我常在心裡分析事情的原因','我喜歡知道事情背後的原理','我覺得知識能帶來安全感'],6:['我做決定前會先想可能的風險','我喜歡有清楚規則和方向','我會反覆確認重要的事情','我重視可以信任的人','我常想「萬一出問題怎麼辦」','我會提醒大家注意細節或危險','我希望身邊環境是安全穩定的','我需要時間確認自己的選擇'],7:['我喜歡新鮮有趣的活動','我很容易想到很多點子','我不喜歡一直做重複無聊的事','我會想安排好玩的事情','我希望生活有自由和變化','我不太喜歡停留在沉重情緒裡','我常被新的可能性吸引','我喜歡讓氣氛變輕鬆'],8:['我敢說出自己的想法','看到不公平時我會想站出來','我不喜歡被別人控制','我做事比較直接','我會保護我在乎的人','遇到挑戰時我不想退縮','我希望自己有力量影響事情','我不喜歡軟弱或被欺負的感覺'],9:['我不喜歡衝突','我希望大家相處和平','我常配合別人的步調','我能理解不同人的想法','我不喜歡被逼著做決定','我常讓氣氛保持穩定','我有時會把自己的想法先放一邊','我希望生活簡單舒服']};
+Object.keys(stems).forEach(t=>stems[t].forEach(s=>core.push({t:+t,q:s})));
+const extra=[['stress','我最近常覺得壓力很大'],['stress','我遇到困難時容易想逃避'],['stress','我容易因為擔心而睡不好或無法專心'],['confidence','我相信自己可以慢慢進步'],['confidence','即使失敗，我也願意再試一次'],['confidence','我能看見自己的優點'],['social','我願意和同學合作完成任務'],['social','我能適度說出自己的想法'],['social','我能聽別人把話說完'],['study','我知道自己適合怎麼讀書'],['study','我能把大任務拆成小步驟'],['study','我完成作業或任務後會有成就感'],['emotion','我能說出自己正在生氣、難過或焦慮'],['emotion','我知道讓自己冷靜下來的方法'],['emotion','我願意向可信任的人求助'],['career','我會好奇自己未來適合做什麼'],['career','我願意探索不同科系或職業'],['career','我知道自己的興趣和能力有關聯']].map(x=>({extra:x[0],q:x[1]}));
+const questions=[...core,...extra]; let idx=0; let answers=JSON.parse(localStorage.getItem('enneaStudentAnswers')||'{}');
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));[...document.querySelectorAll('.tab')].find(b=>b.textContent.includes(id==='home'?'首頁':id==='test'?'開始':id==='types'?'介紹':'說明'))?.classList.add('active'); if(id==='test') renderQuiz(); if(id==='types') renderTypes(); window.scrollTo(0,0)}
+function renderQuiz(){let q=questions[idx]; let done=Object.keys(answers).length; document.getElementById('quizBox').innerHTML=`<div class="small">第 ${idx+1} / ${questions.length} 題　已完成 ${done} 題</div><div class="progress"><div class="bar" style="width:${done/questions.length*100}%"></div></div><div class="question">${q.q}</div><div class="scale">${[1,2,3,4,5].map(v=>`<button class="choice ${answers[idx]==v?'selected':''}" onclick="answer(${v})">${['非常不像我','不像我','普通','像我','非常像我'][v-1]}</button>`).join('')}</div><div class="footerBtns"><button class="btn secondary" onclick="prevQ()" ${idx===0?'disabled':''}>上一題</button><button class="btn secondary" onclick="resetTest()">重新作答</button><button class="btn" onclick="nextQ()">${idx===questions.length-1?'看結果':'下一題'}</button></div>`}
+function answer(v){answers[idx]=v;localStorage.setItem('enneaStudentAnswers',JSON.stringify(answers)); if(idx<questions.length-1){idx++;renderQuiz()}else renderResult()}
+function nextQ(){if(answers[idx]){ if(idx<questions.length-1){idx++;renderQuiz()}else renderResult()} else alert('請先選擇一個答案')}
+function prevQ(){if(idx>0){idx--;renderQuiz()}}
+function resetTest(){if(confirm('確定要清除目前答案？')){answers={};idx=0;localStorage.removeItem('enneaStudentAnswers');renderQuiz()}}
+function calc(){let scores={1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0}; let extraScores={stress:0,confidence:0,social:0,study:0,emotion:0,career:0};questions.forEach((q,i)=>{let v=+answers[i]||0;if(q.t)scores[q.t]+=v;if(q.extra)extraScores[q.extra]+=v}); let sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);return {scores,extraScores,top:+sorted[0][0],second:+sorted[1][0],sorted}}
+function level(v,max){let p=v/max; return p>=.75?'高':p>=.5?'中':'低'}
+function renderResult(){if(Object.keys(answers).length<questions.length){alert('還有題目未完成');return}showPage('result');let {scores,extraScores,top,second,sorted}=calc();let t=types[top];let wing=(Math.abs(top-second)===1 || (top===1&&second===9)||(top===9&&second===1))?types[second].animalName:'不明顯';document.getElementById('resultBox').innerHTML=`<div class="card"><div class="resultHead"><div class="animal">${t.animal}</div><div><h2 class="sectionTitle">你的主要類型：${t.animalName}</h2><p><b>${t.name}</b></p><p>${t.traits.map(x=>`<span class="pill">${x}</span>`).join('')}</p><p class="small">可能翅膀：${wing}</p></div></div></div><div class="card"><h2 class="sectionTitle">九型分數</h2>${sorted.map(([k,v])=>`<div class="scoreRow"><b>${types[k].animal} ${k}型</b><div class="scorebar"><span style="width:${v/40*100}%"></span></div><span>${v}</span></div>`).join('')}</div><div class="grid"><div class="card"><h2 class="sectionTitle">優勢</h2><p>${t.strength}</p></div><div class="card"><h2 class="sectionTitle">提醒</h2><p>${t.watch}</p></div><div class="card"><h2 class="sectionTitle">學習風格</h2><p>${t.learn}</p></div><div class="card"><h2 class="sectionTitle">人際風格</h2><p>${t.relation}</p></div><div class="card"><h2 class="sectionTitle">適合探索</h2><p>${t.career}</p></div><div class="card"><h2 class="sectionTitle">成長一句話</h2><p>${t.growth}</p></div></div><div class="card"><h2 class="sectionTitle">學生狀態補充分析</h2>${Object.entries(extraScores).map(([k,v])=>`<p><b>${label(k)}</b>：${v} 分，${level(v,15)}</p>`).join('')}<p class="small">壓力分數高代表近期負荷較大；信心、社交、學習、情緒、生涯分數越高，代表目前越能使用相關能力。</p></div><div class="footerBtns noPrint"><button class="btn" onclick="window.print()">列印 / 存成 PDF</button><button class="btn secondary" onclick="showPage('test')">回測驗</button><button class="btn secondary" onclick="resetTest();showPage('test')">重新測驗</button></div>`}
+function label(k){return {stress:'壓力狀態',confidence:'自信程度',social:'人際互動',study:'學習策略',emotion:'情緒覺察',career:'生涯探索'}[k]}
+function renderTypes(){document.getElementById('typeList').innerHTML=Object.entries(types).map(([k,t])=>`<div class="typeCard"><div style="font-size:56px">${t.animal}</div><h3>${t.animalName}</h3><p><b>${t.name}</b></p><p class="small">${t.traits.join('｜')}</p></div>`).join('')}
+renderQuiz();renderTypes();
+</script>
+</body>
+</html>
