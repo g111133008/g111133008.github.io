@@ -1,0 +1,1 @@
+const CACHE_NAME="mi-fixed-v1";self.addEventListener("fetch",event=>{});
