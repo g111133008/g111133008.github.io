@@ -1,32 +1,43 @@
-DISC人格分析系統 v1｜48題動物豪華版
+DISC v1 48題合併精簡版
 
-本版重新製作，確保 report.html 會顯示動物圖片。
+單一目錄，只有一組：
+- index.html
+- report.html
+- assets/
+- manifest.json
 
-對應動物：
-D 支配型：獅子
-I 影響型：孔雀
-S 穩定型：無尾熊
-C 謹慎型：貓頭鷹
+網址：
+- index.html?type=student
+- index.html?type=teacher
+- index.html?type=personal
 
-目錄：
-student_version/
-  index.html
-  report.html
-  assets/lion.png
-  assets/peacock.png
-  assets/koala.png
-  assets/owl.png
+產生報告後會自動帶到：
+- report.html?type=student
+- report.html?type=teacher
+- report.html?type=personal
 
-teacher_version/
-  index.html
-  report.html
-  assets/lion.png
-  assets/peacock.png
-  assets/koala.png
-  assets/owl.png
+report.html 會依 type 顯示不同資料。
+如果沒有帶 type，預設 student。
 
-使用方式：
-1. 打開 student_version/index.html 或 teacher_version/index.html
-2. 完成48題
-3. 按產生報告
-4. 報告頁會顯示代表動物卡與圖片
+
+修正版說明：
+- student / teacher / personal 三種版本共用同一份答案暫存。
+- type 只決定 report.html 顯示哪些分析內容。
+- 因為分數來源相同，所以三種版本的 DISC 排序與代表動物會一致。
+- 產生報告後可直接切換：
+  report.html?type=student
+  report.html?type=teacher
+  report.html?type=personal
+
+
+本版修正：
+- teacher 報告前半段完整保留 student 報告內容。
+- teacher 報告只是在 student 內容後方追加「教師參考資料」。
+
+
+本版再修正：
+- 答案暫存鍵固定為 disc48_shared_answers_v2。
+- 報告資料鍵固定為 disc48_shared_report_v2。
+- student / teacher / personal 不再有各自分數資料。
+- type 只控制 report.html 顯示哪些內容，不控制計分。
+- 載入時會清除舊版分開儲存的資料，避免舊暫存造成三版分數不同。
