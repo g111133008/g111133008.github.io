@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DISC Professional AI｜測驗</title>
+  <link rel="stylesheet" href="css/base.css" />
+</head>
+<body>
+  <main class="app quiz-app">
+    <section class="hero">
+      <div class="eyebrow">DISC Professional AI Engine</div>
+      <h1 id="pageTitle">DISC 行為模式測驗</h1>
+      <p>DISC 測的不是人格標籤，而是你平常如何與世界互動。請依照真實狀況作答，沒有標準答案。</p>
+      <p id="formText" class="version-note"></p>
+    </section>
+
+
+    <section class="card settings-card hidden-settings no-print">
+      <h2>施測設定</h2>
+      <p id="lockedSettings" class="muted"></p>
+    </section>
+
+    <section class="card intro-card">
+      <h2>基本資料</h2>
+      <div class="form-grid">
+        <label>姓名<input id="name" placeholder="可不填" autocomplete="name"></label>
+        <label>班級<input id="className" placeholder="可不填"></label>
+        <label>座號<input id="seat" placeholder="可不填"></label>
+        <label>日期<input id="date" readonly></label>
+      </div>
+    </section>
+
+    <section class="card soft-card">
+      <h2>填答說明</h2>
+      <p>1＝非常不像我　2＝有點不像我　3＝普通　4＝有點像我　5＝非常像我</p>
+      <p class="muted">系統會即時記憶姓名、班級、座號、作答內容與目前頁碼。重新整理或離開後再回來，仍會保留進度。</p>
+    </section>
+
+    <form id="quiz" class="card quiz-card">
+      <div class="quiz-head">
+        <div>
+          <h2 id="questionTitle">DISC 題目</h2>
+          <p id="answeredText" class="muted"></p>
+        </div>
+        <strong id="pageLabel" class="page-label"></strong>
+      </div>
+      <div class="progress-track"><div id="progress" class="progress-fill"></div></div>
+      <div id="questions" class="questions"></div>
+      <div class="button-row">
+        <button type="button" class="secondary" id="prev">上一頁</button>
+        <button type="button" id="next">下一頁</button>
+        <button type="button" id="report" class="hide">產生報告</button>
+      </div>
+      <button type="button" class="ghost" id="clear">清除重填</button>
+    </form>
+
+    <p class="footnote">※ 本測驗結果為自我理解、教學觀察與生涯探索參考，不作為心理診斷。</p>
+  </main>
+
+  <script src="js/data/questions.js"></script>
+  <script src="js/data/personality.js"></script>
+  <script src="js/core/questionEngine.js"></script>
+  <script src="js/core/router.js"></script>
+  <script src="js/core/storage.js"></script>
+  <script src="js/core/scoring.js"></script>
+  <script>
+    let mode = normalizeMode(getMode());
+    let form = normalizeForm(getForm());
+    let settings = saveSettings({reportType: mode, testVersion: form});
+    let activeQuestions = getActiveQuestions(form);
+    const pageSize = 8;
+    let totalPages = Math.ceil(activeQuestions.length / pageSize);
+    let state = loadQuizState(form);
+    if (!state.answers) state.answers = {};
+    if (typeof state.page !== 'number') state.page = 0;
+    state.page = Math.max(0, Math.min(totalPages - 1, state.page));
+    state.form = form;
+    state.reportType = mode;
+
+    const $ = id => document.getElementById(id);
+
+    function today(){
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+    function save(){
+      state.form = form;
+      state.reportType = mode;
+      saveQuizState(state, form);
+      saveSettings({reportType:mode, testVersion:form});
+    }
+    function refreshQuestionSet(){
+      activeQuestions = getActiveQuestions(form);
+      totalPages = Math.ceil(activeQuestions.length / pageSize);
+      state = loadQuizState(form);
+      if (!state.answers) state.answers = {};
+      if (typeof state.page !== 'number') state.page = 0;
+      state.page = Math.max(0, Math.min(totalPages - 1, state.page));
+      state.form = form;
+      state.reportType = mode;
+    }
+    function syncSettingsUI(){
+      const cfg = DISC_FORM_CONFIG[form] || DISC_FORM_CONFIG.quick;
+      const box = $('lockedSettings');
+      if (box) box.innerText = `目前入口：${DISC_TYPE_LABEL[mode]}｜${getFormLabel(form)}。學生入口不顯示其他報告版本。`;
+    }
+    function syncInputs(){
+      $('pageTitle').innerText = `DISC 行為模式測驗｜${DISC_TYPE_LABEL[mode]}`;
+      $('questionTitle').innerText = `DISC ${activeQuestions.length}題`;
+      $('formText').innerText = getFormLabel(form);
+      $('name').value = state.name || '';
+      $('className').value = state.className || '';
+      $('seat').value = state.seat || '';
+      $('date').value = state.date || today();
+      state.date = $('date').value;
+      syncSettingsUI();
+      save();
+    }
+    function saveProfile(){
+      state.name = $('name').value.trim();
+      state.className = $('className').value.trim();
+      state.seat = $('seat').value.trim();
+      state.date = $('date').value || today();
+      save();
+    }
+    function render(){
+      const start = state.page * pageSize;
+      const end = Math.min(start + pageSize, activeQuestions.length);
+      const answered = countAnswered(state.answers, activeQuestions);
+      $('answeredText').innerText = `已完成 ${answered} / ${activeQuestions.length} 題`;
+      $('pageLabel').innerText = `第 ${state.page + 1} / ${totalPages} 頁`;
+      $('progress').style.width = Math.round(answered / activeQuestions.length * 100) + '%';
+      let html = '';
+      for (let i = start; i < end; i++) {
+        const q = activeQuestions[i];
+        html += `<div class="question">
+          <div class="q-title"><span>${i + 1}</span>${q.text}</div>
+          <div class="options" role="radiogroup" aria-label="第${i+1}題">
+            ${[1,2,3,4,5].map(v => `<label class="option"><input type="radio" name="${q.id}" value="${v}" ${state.answers[q.id] == v ? 'checked' : ''}><span>${v}</span></label>`).join('')}
+          </div>
+        </div>`;
+      }
+      $('questions').innerHTML = html;
+      $('prev').disabled = state.page === 0;
+      $('next').classList.toggle('hide', state.page === totalPages - 1);
+      $('report').classList.toggle('hide', state.page !== totalPages - 1);
+    }
+    function checkPage(){
+      const start = state.page * pageSize;
+      const end = Math.min(start + pageSize, activeQuestions.length);
+      for (let i = start; i < end; i++) {
+        const q = activeQuestions[i];
+        if (!isQuestionAnswered(state.answers, q)) { alert(`第 ${i + 1} 題尚未作答`); return false; }
+      }
+      return true;
+    }
+
+    document.addEventListener('change', e => {
+      if (e.target.type === 'radio') {
+        state.answers[e.target.name] = Number(e.target.value);
+        save();
+        render();
+      }
+    });
+    ['name','className','seat'].forEach(id => $(id).addEventListener('input', saveProfile));
+    $('next').onclick = () => { if (!checkPage()) return; state.page++; save(); render(); scrollTo({top: $('quiz').offsetTop - 10, behavior:'smooth'}); };
+    $('prev').onclick = () => { state.page--; save(); render(); scrollTo({top: $('quiz').offsetTop - 10, behavior:'smooth'}); };
+    $('report').onclick = () => {
+      for (let i = 0; i < activeQuestions.length; i++) {
+        const q = activeQuestions[i];
+        if (!isQuestionAnswered(state.answers, q)) { alert(`第 ${i + 1} 題尚未作答`); state.page = Math.floor(i / pageSize); save(); render(); return; }
+      }
+      saveProfile();
+      const scores = scoreDISC(state.answers, activeQuestions);
+      saveReportData({
+        version: 'DISCV4｜Engine M3 Report Assembler',
+        reportType: mode,
+        type: mode,
+        testVersion: form,
+        form,
+        formLabel: getFormLabel(form),
+        profile: { name: state.name || '', className: state.className || '', seat: state.seat || '', date: state.date || today() },
+        answers: state.answers,
+        questionIds: activeQuestions.map(q => q.id),
+        scores
+      });
+      location.href = buildUrl('report.html', {type: mode, form});
+    };
+    $('clear').onclick = () => {
+      if (!confirm('確定清除所有作答資料？')) return;
+      clearQuizState(form); clearReportData();
+      state = { answers:{}, page:0, date: today(), form, reportType: mode };
+      syncInputs(); render();
+    };
+    syncInputs(); render();
+  </script>
+</body>
+</html>

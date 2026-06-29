@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DISC Professional AI｜報告</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/report.css" />
+  <link rel="stylesheet" href="css/print.css" media="print" />
+</head>
+<body>
+  <div class="actions no-print">
+    <button class="secondary" id="editBtn">修改答案</button>
+    <button onclick="window.print()">列印 / 存成PDF</button>
+  </div>
+  <main id="app" class="report-app"></main>
+
+  <script src="js/data/questions.js"></script>
+  <script src="js/data/personality.js"></script>
+  <script src="js/core/questionEngine.js"></script>
+  <script src="js/core/router.js"></script>
+  <script src="js/core/storage.js"></script>
+  <script src="js/core/scoring.js"></script>
+  <script src="js/core/analysisEngine.js"></script>
+  <script src="js/core/chart.js"></script>
+  <script src="js/core/reportAssembler.js"></script>
+  <script src="js/prompts/promptLibrary.js"></script>
+  <script src="js/ai/storyteller.js"></script>
+  <script src="js/reports/common.js"></script>
+  <script src="js/reports/student.js"></script>
+  <script src="js/reports/teacher.js"></script>
+  <script src="js/reports/personal.js"></script>
+  <script src="js/reports/sections.js"></script>
+  <script src="js/reports/config.js"></script>
+  <script>
+    const data = loadReportData();
+    const urlParams = new URLSearchParams(location.search);
+    const urlMode = urlParams.has('type') ? normalizeMode(urlParams.get('type')) : null;
+    const urlForm = (urlParams.has('form') || urlParams.has('version')) ? getForm() : null;
+    const app = document.getElementById('app');
+
+    if (!data) {
+      document.getElementById('editBtn').onclick = () => location.href = buildUrl('index.html', {type: urlMode || 'student', form: urlForm || 'quick'});
+      app.innerHTML = `<section class="report-section"><h2>尚未產生報告</h2><p>請先完成測驗，再產生報告。</p><button onclick="location.href='index.html?type=student&form=quick'">回測驗</button></section>`;
+    } else {
+      data.type = normalizeMode(urlMode || data.reportType || data.type || 'student');
+      data.reportType = data.type;
+      data.form = normalizeForm(urlForm || data.testVersion || data.form || 'quick');
+      data.testVersion = data.form;
+      saveSettings({reportType:data.type, testVersion:data.form});
+      document.body.dataset.reportType = data.type;
+      document.getElementById('editBtn').onclick = () => location.href = buildUrl('index.html', {type:data.type, form:data.form});
+      const analysis = buildAnalysis(data);
+      app.innerHTML = renderReport(data, analysis);
+      requestAnimationFrame(() => {
+        if (analysis.features.multiPointRadar) drawAdaptiveRadar(document.getElementById('radar'), analysis);
+        else drawRadar(document.getElementById('radar'), data.scores);
+      });
+    }
+  </script>
+</body>
+</html>
